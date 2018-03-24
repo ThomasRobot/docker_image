@@ -1,5 +1,12 @@
 
-sudo cp ./sources.list.tsinghua /etc/apt/sources.list
+BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+
+sudo cp ${BASE_DIR}/sources.list.tsinghua /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get upgrade
-sh ./common/get-docker.sh
+
+sh ${BASE_DIR}/common/get-docker.sh
+
+
+cd /tmp
+tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz && cd linuxcan && make && sudo make install
