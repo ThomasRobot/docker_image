@@ -28,4 +28,7 @@ tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz -C /tmp && cd /tmp/linuxcan && sudo 
 
 # Prepare usb 
 tar -xzvf ${BASE_DIR}/common/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
+sudo cp /etc/default/grub /etc/default/grub.backup
+sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
+
 
