@@ -1,10 +1,11 @@
 FROM osrf/ros:indigo-desktop-full
 
-COPY ../common/sources.list.ustc /etc/apt/sources.list
-COPY ../common/ros-latest.list.ustc /etc/apt/sources.list.d/ros-latest.list
+COPY common/sources.list.ustc /etc/apt/sources.list
+COPY common/ros-latest.list.ustc /etc/apt/sources.list.d/ros-latest.list
 RUN apt-get update && apt-get install -y \
       ros-indigo-move-base \
       libgit2-dev \
+      ros-indigo-gps-common \
       ros-indigo-tf2-eigen \
       ros-indigo-diff-drive-controller \
       ros-indigo-controller-manager \
