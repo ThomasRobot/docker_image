@@ -23,5 +23,8 @@ sudo apt-get install -y build-essential
 sudo apt-get install -y linux-headers-`uname -r`
 cd /tmp
 rm -rf linuxcan
-tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz && cd linuxcan && sudo make uninstall && make && sudo make install
+tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz -C /tmp && cd /tmp/linuxcan && sudo make uninstall && make && sudo make install
+
+# Prepare usb 
+tar -xzvf ${BASE_DIR}/common/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sudo sh flycap2_conf
 
