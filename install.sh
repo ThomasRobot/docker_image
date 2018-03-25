@@ -16,7 +16,7 @@ sudo apt-get install -y docker-ce
 
 # Install some essential package
 # sudo apt-get upgrade -y
-sudo apt-get install -y language-pack-en language-pack-zh-hans
+sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server
 
 # Install linuxcan driver
 sudo apt-get install -y build-essential
