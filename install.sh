@@ -21,19 +21,33 @@ sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server
 sudo apt-get install -y terminator vim nautilus-open-terminal
 
 # Install linuxcan driver
-sudo apt-get install -y build-essential
-sudo apt-get install -y linux-headers-`uname -r`
-cd /tmp
-rm -rf linuxcan
-tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz -C /tmp && cd /tmp/linuxcan && sudo make uninstall && make && sudo make install
+echo -n Install linuxcan?(y/N)
+read comfirm
+if [ $confirm == 'y' || $confirm == 'Y' ]; then
+  sudo apt-get install -y build-essential
+  sudo apt-get install -y linux-headers-`uname -r`
+  cd /tmp
+  rm -rf linuxcan
+  tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz -C /tmp && cd /tmp/linuxcan && sudo make uninstall && make && sudo make install
+fi
 
 # Prepare usb 
-tar -xzvf ${BASE_DIR}/common/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
-sudo cp /etc/default/grub /etc/default/grub.backup
-sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
-sudo update-grub
+echo -n Install pointgrey driver?(y/N)
+read comfirm
+if [ $confirm == 'y' || $confirm == 'Y' ]; then
+  tar -xzvf ${BASE_DIR}/common/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
+  sudo cp /etc/default/grub /etc/default/grub.backup
+  sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
+  sudo update-grub
+fi
 
 # Velodyne
-echo "Please add a wired connection, set ip to 192.168.1.*/24"
-nm-connection-editor -c -t "802-3-ethernet"
+echo -n Prepare velodyne network?(y/N)
+read comfirm
+if [ $confirm == 'y' || $confirm == 'Y' ]; then
+  echo "Please add a wired connection, set ip to 192.168.1.*/24"
+  nm-connection-editor -c -t "802-3-ethernet"
+fi
+
+# Prepare ss
 
