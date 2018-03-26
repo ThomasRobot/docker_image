@@ -16,8 +16,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     usbutils && \
     rm -rf /var/lib/apt/lists/* && \
-    mkdir -p ~/thomas_ws/depends && \
-    cd ~/thomas_ws/depends && \
+    cd /tmp && \
     git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
     cd libnabo && \
     mkdir build && \
@@ -25,7 +24,7 @@ RUN apt-get update && apt-get install -y \
     cmake .. && \
     make -j && \
     make install && \
-    cd ~/thomas_ws/depends && \
+    cd /tmp && \
     git clone http://gitee.com/ZJRLMirrors/libpointmatcher.git && \
     cd libpointmatcher && \
     mkdir build && \
@@ -33,7 +32,7 @@ RUN apt-get update && apt-get install -y \
     cmake .. && \
     make -j && \
     make install && \
-    cd ~/thomas_ws/depends && \
+    cd /tmp && \
     git clone http://gitee.com/ZJRLMirrors/g2o.git && \
     cd g2o && \
     git checkout 2e35669 && \
@@ -42,7 +41,5 @@ RUN apt-get update && apt-get install -y \
     cmake -DG2O_BUILD_APPS=OFF -DG2O_BUILD_EXAMPLES=OFF .. && \
     make -j && \
     make install && \
-    cd ~/thomas_ws && \
-    rm -rf depends && \
-    cd ~ && \
-    echo 'source /opt/ros/indigo/setup.sh' >> .bashrc
+    rm -rf ~/.cmake && \
+    echo 'source /opt/ros/indigo/setup.sh' >> ~/.bashrc

@@ -1,6 +1,11 @@
 #!/bin/bash
 
-images=`docker images thomas --format "{{.Repository}}:{{.Tag}}"`
+if [ $# -gt 0 ]; then
+  images=$1
+else
+  images=`docker images thomas --format "{{.Repository}}:{{.Tag}}"`
+fi
+
 for image in ${images}; do
   tag=`echo ${image} | cut -d':' -f2`
   echo 'Saving thomas:' ${tag}

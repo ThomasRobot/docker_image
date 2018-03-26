@@ -21,12 +21,13 @@ RUN apt-get update && \
     dpkg -i libmultisync-2* && \
     dpkg -i flycap-2* && \
     dpkg -i flycapture-doc-2* && \
-    dpkg -i updatorgui* && \
-    . /opt/ros/indigo/setup.sh && \
-    mkdir ~/thomas_ws/src && \
+    dpkg -i updatorgui*
+RUN . /opt/ros/indigo/setup.sh && \
+    mkdir -p ~/thomas_ws/src && \
     cd ~/thomas_ws/src && \ 
     catkin_init_workspace . && \
     git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
     cd ~/thomas_ws && \
     catkin_make && \
-    echo 'source ~/thomas_ws/devel/setup.sh' >> .bashrc
+    echo 'source ~/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
+    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
