@@ -4,6 +4,8 @@ COPY common/flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN apt-get update && \
     apt-get install -y \
     ros-indigo-gps-common \
+    vim \
+    usbutils \
     libpcap-dev \
     libraw1394-11 \
     libgtkmm-2.4-1c2a \
