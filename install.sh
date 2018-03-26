@@ -18,6 +18,7 @@ sudo usermod -aG docker $USER
 # Install some essential package
 # sudo apt-get upgrade -y
 sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server
+sudo apt-get install -y terminator vim nautilus-open-terminal
 
 # Install linuxcan driver
 sudo apt-get install -y build-essential
