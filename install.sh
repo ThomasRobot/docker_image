@@ -33,4 +33,7 @@ sudo cp /etc/default/grub /etc/default/grub.backup
 sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
 sudo update-grub
 
+# Velodyne
+echo "Please add a wired connection, set ip to 192.168.1.*/24"
+nm-connection-editor -c -t "802-3-ethernet"
 
