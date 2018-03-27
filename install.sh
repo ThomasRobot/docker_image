@@ -49,5 +49,21 @@ if [ $confirm == 'y' || $confirm == 'Y' ]; then
   nm-connection-editor -c -t "802-3-ethernet"
 fi
 
-# Prepare ss
+# Prepare startup script
+echo '
+if [ -z `docker container ls -f name=thomas_os --format {{.ID}}` ]; then
+  read -t 5 -n 1 -p "Start docker? (Y/n) " confirm
+  echo ''
+  if [ ! $confirm = 'n' ] && [ ! $confirm = 'N' ]; then
+    sh ~/docker_image/stop.sh 
+    sh ~/docker_image/start.sh
+  fi
+else
+  read -t 5 -n 1 -p "Enter docker? (y/N) " confirm
+  echo ''
+  if [ $confirm = 'y' ] || [ $confirm = 'Y' ]; then
+    sh ~/docker_image/into.sh
+  fi
+fi
+' > .bashrc
 
