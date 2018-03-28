@@ -45,7 +45,7 @@ fi
 echo -n Prepare velodyne network?(y/N)
 read comfirm
 if [ $confirm == 'y' || $confirm == 'Y' ]; then
-  echo "Please add a wired connection, set ip to 192.168.1.*/24"
+  echo "Please add a wired connection, set ip to 192.168.0.*/24"
   nm-connection-editor -c -t "802-3-ethernet"
 fi
 
