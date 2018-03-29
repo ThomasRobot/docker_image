@@ -55,6 +55,6 @@ docker run -it \
         ${CATKIN_WS} \
         -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
         -w ${DOCKER_HOME} \
-        thomas:v2 \
+        thomas:v3 \
         roscore
 
