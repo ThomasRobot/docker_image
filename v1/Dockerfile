@@ -41,5 +41,4 @@ RUN apt-get update && apt-get install -y \
     cmake -DG2O_BUILD_APPS=OFF -DG2O_BUILD_EXAMPLES=OFF .. && \
     make -j && \
     make install && \
-    rm -rf ~/.cmake && \
-    echo 'source /opt/ros/indigo/setup.sh' >> ~/.bashrc
+    rm -rf ~/.cmake

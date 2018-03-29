@@ -24,13 +24,18 @@ RUN apt-get update && \
     dpkg -i flycapture-doc-2* && \
     dpkg -i updatorgui*
 RUN . /opt/ros/indigo/setup.sh && \
-    mkdir -p ~/thomas_ws/src && \
-    cd ~/thomas_ws/src && \ 
+    addgroup --gid 1100 thomas && \
+    mkdir /thomas && \
+    chgrp thomas /thomas && \
+    chmod g+rwx /thomas && \
+    mkdir -p /thomas/thomas_ws/src && \
+    cd /thomas/thomas_ws/src && \ 
     catkin_init_workspace . && \
     git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
-    cd ~/thomas_ws && \
-    catkin_make && \
-    echo 'source ~/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
+    cd /thomas/thomas_ws && \
+    catkin_make
+
+RUN echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
     echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
 
 COPY common/thomas_entrypoint.sh /
