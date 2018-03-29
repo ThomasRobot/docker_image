@@ -3,6 +3,7 @@ FROM thomas:v1
 COPY common/flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN apt-get update && \
     apt-get install -y \
+    python-serial \
     libpcap-dev \
     libraw1394-11 \
     libgtkmm-2.4-1c2a \
@@ -31,3 +32,6 @@ RUN . /opt/ros/indigo/setup.sh && \
     catkin_make && \
     echo 'source ~/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
     echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
+
+COPY common/thomas_entrypoint.sh /
+ENTRYPOINT ["/thomas_entrypoint.sh"]
