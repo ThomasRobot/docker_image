@@ -24,9 +24,9 @@ RUN apt-get update && \
     dpkg -i flycapture-doc-2* && \
     dpkg -i updatorgui*
 RUN . /opt/ros/indigo/setup.sh && \
-    addgroup --gid 1100 thomas && \
+    addgroup --gid 1100 share && \
     mkdir /thomas && \
-    chgrp thomas /thomas && \
+    chgrp share /thomas && \
     chmod g+rwx /thomas && \
     mkdir -p /thomas/thomas_ws/src && \
     cd /thomas/thomas_ws/src && \ 
