@@ -31,7 +31,7 @@ RUN . /opt/ros/indigo/setup.sh && \
     mkdir -p /thomas/thomas_ws/src && \
     cd /thomas/thomas_ws/src && \ 
     catkin_init_workspace . && \
-    git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
+    git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git  && \
     cd /thomas/thomas_ws && \
     catkin_make
 
