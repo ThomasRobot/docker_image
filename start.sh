@@ -23,6 +23,15 @@ GRP_ID=$(id -g)
 HOST_HOSTNAME=`hostname`
 LOCAL_HOSTNAME=thomas-docker-on-${HOST_HOSTNAME}
 
+PG_GRP='pgrimaging'
+if grep -q ${PG_GRP} /etc/group; then
+  PG_GRP="-e PG_GRP=${PG_GRP}"
+  PG_GRP_ID="-e PG_GRP_ID=`grep pgrimaging /etc/group | cut -d':' -f 3`"
+else
+  PG_GRP=''
+  PG_GRP_ID=''
+fi
+
 docker run -it \
         -d \
         --privileged \
@@ -41,6 +50,8 @@ docker run -it \
         -v /media:/media \
         -v /etc/localtime:/etc/localtime:ro \
         -v /dev:/dev \
+        ${PG_GRP} \
+        ${PG_GRP_ID} \
         ${CATKIN_WS} \
         -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
         -w ${DOCKER_HOME} \
