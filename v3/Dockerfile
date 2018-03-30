@@ -1,6 +1,6 @@
 FROM thomas:v2
 
-COPY common/pylon_5.0.11.10914-deb0_amd64.deb /tmp
+COPY pylon_5.0.11.10914-deb0_amd64.deb /tmp
 RUN . /thomas/thomas_ws/devel/setup.sh && \
     apt-get update && \
     dpkg -i /tmp/pylon*.deb && \

@@ -1,7 +1,7 @@
 FROM osrf/ros:indigo-desktop-full
 
-COPY common/sources.list.ustc /etc/apt/sources.list
-COPY common/ros-latest.list.ustc /etc/apt/sources.list.d/ros-latest.list
+COPY sources.list.ustc /etc/apt/sources.list
+COPY ros-latest.list.ustc /etc/apt/sources.list.d/ros-latest.list
 RUN apt-get update && apt-get install -y \
     ros-indigo-move-base \
     ros-indigo-gps-common \
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     usbutils && \
     rm -rf /var/lib/apt/lists/*
 
-COPY common/ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
+COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
 RUN cd /tmp && \
     git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
     cd libnabo && \
@@ -61,5 +61,5 @@ RUN addgroup --gid 1100 share && \
     echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
     echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
 
-COPY common/thomas_entrypoint.sh /
+COPY thomas_entrypoint.sh /
 ENTRYPOINT ["/thomas_entrypoint.sh"]

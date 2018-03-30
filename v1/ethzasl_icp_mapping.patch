@@ -1,0 +1,203 @@
+diff --git a/ethzasl_icp_mapper/CMakeLists.txt b/ethzasl_icp_mapper/CMakeLists.txt
+index 8743532..2802c8e 100644
+--- a/ethzasl_icp_mapper/CMakeLists.txt
++++ b/ethzasl_icp_mapper/CMakeLists.txt
+@@ -3,7 +3,7 @@ project(ethzasl_icp_mapper)
+ 
+ find_package(catkin REQUIRED roscpp rospy rosbag std_msgs geometry_msgs nav_msgs
+ tf tf2 tf_conversions message_filters map_msgs libpointmatcher_ros visualization_msgs
+-interactive_markers ethzasl_gridmap_2d message_generation libpointmatcher)
++interactive_markers ethzasl_gridmap_2d message_generation)
+ 
+ add_service_files( FILES
+ CorrectPose.srv
+@@ -19,7 +19,7 @@ generate_messages(DEPENDENCIES sensor_msgs nav_msgs std_msgs geometry_msgs actio
+ catkin_package (
+ 	CATKIN_DEPENDS roscpp rospy rosbag std_msgs geometry_msgs nav_msgs
+ tf tf2 tf_conversions message_filters map_msgs libpointmatcher_ros ethzasl_gridmap_2d visualization_msgs interactive_markers
+-message_runtime libpointmatcher
++message_runtime
+ )
+ 
+ # Set the build type.  Options are:
+diff --git a/ethzasl_icp_mapper/package.xml b/ethzasl_icp_mapper/package.xml
+index cb66ebd..66298e5 100644
+--- a/ethzasl_icp_mapper/package.xml
++++ b/ethzasl_icp_mapper/package.xml
+@@ -25,7 +25,7 @@
+   <build_depend>tf_conversions</build_depend>
+   <build_depend>message_filters</build_depend>
+   <build_depend>map_msgs</build_depend>
+-  <build_depend>libpointmatcher</build_depend>
++  <!--build_depend>libpointmatcher</build_depend-->
+   <build_depend>libpointmatcher_ros</build_depend>
+   <build_depend>ethzasl_gridmap_2d</build_depend>
+   <build_depend>visualization_msgs</build_depend>
+@@ -44,7 +44,7 @@
+   <run_depend>tf_conversions</run_depend>
+   <run_depend>message_filters</run_depend>
+   <run_depend>map_msgs</run_depend>
+-  <run_depend>libpointmatcher</run_depend>
++  <!--run_depend>libpointmatcher</run_depend-->
+   <run_depend>libpointmatcher_ros</run_depend>
+   <run_depend>ethzasl_gridmap_2d</run_depend>
+   <run_depend>visualization_msgs</run_depend>
+diff --git a/ethzasl_icp_mapper_experiments/CMakeLists.txt b/ethzasl_icp_mapper_experiments/CMakeLists.txt
+index 8c38c06..fabfd2d 100644
+--- a/ethzasl_icp_mapper_experiments/CMakeLists.txt
++++ b/ethzasl_icp_mapper_experiments/CMakeLists.txt
+@@ -27,7 +27,7 @@ tf
+ tf_conversions
+ libpointmatcher_ros
+ DEPENDS
+-libpointmatcher
++# libpointmatcher
+ # libnabo
+ # libargtable2-dev
+ # yaml-cpp
+diff --git a/ethzasl_icp_mapper_experiments/package.xml b/ethzasl_icp_mapper_experiments/package.xml
+index 5d2460f..0c73152 100644
+--- a/ethzasl_icp_mapper_experiments/package.xml
++++ b/ethzasl_icp_mapper_experiments/package.xml
+@@ -22,7 +22,7 @@
+   <build_depend>nav_msgs</build_depend>
+   <build_depend>tf</build_depend>
+   <build_depend>tf_conversions</build_depend>
+-  <build_depend>libpointmatcher</build_depend>
++  <!--build_depend>libpointmatcher</build_depend-->
+   <build_depend>libpointmatcher_ros</build_depend>
+ 
+   <run_depend>roscpp</run_depend>
+@@ -34,8 +34,8 @@
+   <run_depend>nav_msgs</run_depend>
+   <run_depend>tf</run_depend>
+   <run_depend>tf_conversions</run_depend>
+-  <run_depend>libnabo</run_depend>
+-  <run_depend>libpointmatcher</run_depend>
++  <!--run_depend>libnabo</run_depend-->
++  <!--run_depend>libpointmatcher</run_depend-->
+   <run_depend>libpointmatcher_ros</run_depend>
+ 
+ </package>
+diff --git a/ethzasl_icp_mapping/package.xml b/ethzasl_icp_mapping/package.xml
+index 30fd721..2b668a5 100644
+--- a/ethzasl_icp_mapping/package.xml
++++ b/ethzasl_icp_mapping/package.xml
+@@ -16,12 +16,12 @@
+   <run_depend>ethzasl_gridmap_2d</run_depend>
+   <run_depend>ethzasl_icp_mapper_experiments</run_depend>
+   <run_depend>ethzasl_point_cloud_vtk_tools</run_depend>
+-  <run_depend>libnabo</run_depend>
+-  <run_depend>libpointmatcher</run_depend>
++  <!--run_depend>libnabo</run_depend-->
++  <!--run_depend>libpointmatcher</run_depend-->
+   <run_depend>libpointmatcher_ros</run_depend>
+ 
+   <export>
+     <metapackage />
+   </export>
+ 
+-</package>
+\ No newline at end of file
++</package>
+diff --git a/ethzasl_point_cloud_vtk_tools/CMakeLists.txt b/ethzasl_point_cloud_vtk_tools/CMakeLists.txt
+index 0b44ee3..cb1ee2e 100644
+--- a/ethzasl_point_cloud_vtk_tools/CMakeLists.txt
++++ b/ethzasl_point_cloud_vtk_tools/CMakeLists.txt
+@@ -11,12 +11,11 @@ sensor_msgs
+ nav_msgs
+ tf
+ tf_conversions
+-libpointmatcher
+ libpointmatcher_ros)
+ 
+ catkin_package(
+ CATKIN_DEPENDS roscpp rospy rosbag std_msgs geometry_msgs sensor_msgs nav_msgs
+-tf tf_conversions libpointmatcher libpointmatcher_ros
++tf tf_conversions libpointmatcher_ros
+ )
+ 
+ # Set the build type.  Options are:
+diff --git a/ethzasl_point_cloud_vtk_tools/package.xml b/ethzasl_point_cloud_vtk_tools/package.xml
+index 9196338..74eecfb 100644
+--- a/ethzasl_point_cloud_vtk_tools/package.xml
++++ b/ethzasl_point_cloud_vtk_tools/package.xml
+@@ -21,7 +21,7 @@
+   <build_depend>nav_msgs</build_depend>
+   <build_depend>tf</build_depend>
+   <build_depend>tf_conversions</build_depend>
+-  <build_depend>libpointmatcher</build_depend>
++  <!--build_depend>libpointmatcher</build_depend-->
+   <build_depend>libpointmatcher_ros</build_depend>
+ 
+   <run_depend>roscpp</run_depend>  
+@@ -33,7 +33,7 @@
+   <run_depend>nav_msgs</run_depend>
+   <run_depend>tf</run_depend>
+   <run_depend>tf_conversions</run_depend>
+-  <run_depend>libpointmatcher</run_depend>
++  <!--run_depend>libpointmatcher</run_depend-->
+   <run_depend>libpointmatcher_ros</run_depend>
+ 
+ 
+diff --git a/libpointmatcher_ros/CMakeLists.txt b/libpointmatcher_ros/CMakeLists.txt
+index a29df59..b92f0d9 100644
+--- a/libpointmatcher_ros/CMakeLists.txt
++++ b/libpointmatcher_ros/CMakeLists.txt
+@@ -9,7 +9,6 @@ nav_msgs
+ tf
+ tf_conversions
+ eigen_conversions
+-libpointmatcher
+ )
+ 
+ catkin_package(
+@@ -22,9 +21,10 @@ nav_msgs
+ tf
+ tf_conversions
+ eigen_conversions
+-libpointmatcher
+ )
+ 
++find_package(libpointmatcher REQUIRED)
++
+ # c++ 0x
+ if("${CMAKE_CXX_COMPILER_ID}" MATCHES "[cC]lang")
+ 	set(CMAKE_COMPILER_IS_CLANGXX)
+@@ -48,11 +48,11 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+ 
+ add_definitions(-DHAVE_YAML_CPP)
+-include_directories(include)
++include_directories(include ${libpointmatcher_INCLUDE_DIRS})
+ 
+ add_library(pointmatcher_ros src/point_cloud.cpp src/transform.cpp)
+ include_directories(${catkin_INCLUDE_DIRS})
+-target_link_libraries(pointmatcher_ros ${catkin_LIBRARIES})
++target_link_libraries(pointmatcher_ros ${catkin_LIBRARIES} ${libpointmatcher_LIBRARIES})
+ 
+ # Mark executables and/or libraries for installation
+ install(TARGETS pointmatcher_ros
+diff --git a/libpointmatcher_ros/package.xml b/libpointmatcher_ros/package.xml
+index d13b8dd..79c2624 100644
+--- a/libpointmatcher_ros/package.xml
++++ b/libpointmatcher_ros/package.xml
+@@ -17,7 +17,7 @@
+   <build_depend>tf</build_depend>
+   <build_depend>tf_conversions</build_depend>
+   <build_depend>eigen_conversions</build_depend>
+-  <build_depend>libpointmatcher</build_depend>
++  <!--build_depend>libpointmatcher</build_depend-->
+ 
+   <run_depend>roscpp</run_depend>
+   <run_depend>sensor_msgs</run_depend>
+@@ -25,8 +25,7 @@
+   <run_depend>tf</run_depend>
+   <run_depend>tf_conversions</run_depend>
+   <run_depend>eigen_conversions</run_depend>
+-  <run_depend>libpointmatcher</run_depend>
+-  
++  <!--run_depend>libpointmatcher</run_depend-->
+ </package>
+ 
+ 

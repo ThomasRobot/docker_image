@@ -1,6 +1,6 @@
 FROM thomas:v1
 
-COPY common/flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
+COPY flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN apt-get update && \
     apt-get install -y \
     python-serial \
@@ -26,12 +26,6 @@ RUN apt-get update && \
 
 RUN . /opt/ros/indigo/setup.sh && \
     cd /thomas/thomas_ws/src && \ 
-    git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git  && \
+    git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
     cd /thomas/thomas_ws && \
     catkin_make
-
-RUN echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
-    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
-
-COPY common/thomas_entrypoint.sh /
-ENTRYPOINT ["/thomas_entrypoint.sh"]
