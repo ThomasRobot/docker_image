@@ -6,14 +6,23 @@ sudo cp ${BASE_DIR}/common/sources.list.tsinghua /etc/apt/sources.list
 # sudo apt-get update # Already included in get-docker.sh
 
 # Install Docker
-# sh ${BASE_DIR}/common/get-docker.sh
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7EA0A9C3F273FCD8
-sudo add-apt-repository "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install -y docker-ce
-sudo usermod -aG docker $USER
+if [ -f "/usr/local/cuda/version.txt" ]; then
+  curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+  distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+  curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
+    sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+  sudo apt-get update
+  sudo apt-get install nvidia-docker
+else
+  # sh ${BASE_DIR}/common/get-docker.sh
+  sudo apt-get update
+  sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7EA0A9C3F273FCD8
+  sudo add-apt-repository "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
+  sudo apt-get update
+  sudo apt-get install -y docker-ce
+  sudo usermod -aG docker $USER
+fi
 
 # Install some essential package
 # sudo apt-get upgrade -y

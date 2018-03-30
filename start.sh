@@ -32,29 +32,37 @@ else
   PG_GRP_ID=''
 fi
 
-docker run -it \
-        -d \
-        --privileged \
-        --name thomas_os \
-        -e DISPLAY=":0" \
-        -e DOCKER_USER=$USER \
-        -e DOCKER_USER_ID=$USER_ID \
-        -e DOCKER_GRP=$GRP \
-        -e DOCKER_GRP_ID=$GRP_ID \
-        -e QT_X11_NO_MITSHM=1 \
-        -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-        --net host \
-        --hostname ${LOCAL_HOSTNAME} \
-        --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
-        --add-host ${HOST_HOSTNAME}:127.0.0.1 \
-        -v /media:/media \
-        -v /etc/localtime:/etc/localtime:ro \
-        -v /dev:/dev \
-        ${PG_GRP} \
-        ${PG_GRP_ID} \
-        ${CATKIN_WS} \
-        -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
-        -w ${DOCKER_HOME} \
-        thomas:v3 \
-        roscore
+if [ -n `command -v nvidia-docker1` ]; then
+  DOCKER_CMD=nvidia-docker
+  NV_SUFFIX="-nv"
+else
+  DOCKER_CMD=docker
+  NV_SUFFIX=""
+fi
+
+${DOCKER_CMD} run -it \
+                  -d \
+                  --privileged \
+                  --name thomas_os \
+                  -e DISPLAY=":0" \
+                  -e DOCKER_USER=$USER \
+                  -e DOCKER_USER_ID=$USER_ID \
+                  -e DOCKER_GRP=$GRP \
+                  -e DOCKER_GRP_ID=$GRP_ID \
+                  -e QT_X11_NO_MITSHM=1 \
+                  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+                  --net host \
+                  --hostname ${LOCAL_HOSTNAME} \
+                  --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
+                  --add-host ${HOST_HOSTNAME}:127.0.0.1 \
+                  -v /media:/media \
+                  -v /etc/localtime:/etc/localtime:ro \
+                  -v /dev:/dev \
+                  ${PG_GRP} \
+                  ${PG_GRP_ID} \
+                  ${CATKIN_WS} \
+                  -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
+                  -w ${DOCKER_HOME} \
+                  thomas:v3${NV_SUFFIX} \
+                  roscore
 
