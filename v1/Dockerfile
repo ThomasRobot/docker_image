@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     ros-indigo-gps-common \
     libgit2-dev \
     libsuitesparse-dev \
+    libgoogle-glog-dev \
     vim \
     usbutils && \
     rm -rf /var/lib/apt/lists/*

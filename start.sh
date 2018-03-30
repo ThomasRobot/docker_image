@@ -21,7 +21,7 @@ GRP=$(id -g -n)
 GRP_ID=$(id -g)
 
 HOST_HOSTNAME=`hostname`
-LOCAL_HOSTNAME=thomas-docker-on-${HOST_HOSTNAME}
+LOCAL_HOSTNAME=docker-on-${HOST_HOSTNAME}
 
 PG_GRP='pgrimaging'
 if grep -q ${PG_GRP} /etc/group; then
