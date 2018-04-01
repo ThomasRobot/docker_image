@@ -3,6 +3,7 @@ FROM thomas:v2
 COPY pylon_5.0.11.10914-deb0_amd64.deb /tmp
 RUN . /thomas/thomas_ws/devel/setup.sh && \
     apt-get update && \
+    apt-get install -v gfortran ros-indigo-octomap-msgs ros-indigo-grid-map && \
     dpkg -i /tmp/pylon*.deb && \
     sh -c 'echo "yaml https://raw.githubusercontent.com/magazino/pylon_camera/indigo-devel/rosdep/pylon_sdk.yaml " > /etc/ros/rosdep/sources.list.d/15-plyon_camera.list' && \
     rosdep update && \
