@@ -64,5 +64,5 @@ ${DOCKER_CMD} run -it \
                   -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
                   -w ${DOCKER_HOME} \
                   thomas:v3${NV_SUFFIX} \
-                  roscore
+                  /bin/bash -c "source /opt/ros/indigo/setup.bash && roscore"
 
