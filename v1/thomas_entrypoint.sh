@@ -13,6 +13,6 @@ if [ -n "${DOCKER_USER}" ] && [ -n "${DOCKER_USER_ID}" ] && [ -n "${DOCKER_GRP}"
 fi
 
 # setup ros environment
-source "/opt/ros/$ROS_DISTRO/setup.bash"
+# source "/opt/ros/$ROS_DISTRO/setup.bash"
 
 exec "$@"

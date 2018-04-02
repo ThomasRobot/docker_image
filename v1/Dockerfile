@@ -51,7 +51,7 @@ RUN addgroup --gid 1100 share && \
     mkdir /thomas && \
     chgrp share /thomas && \
     chmod g+rwx /thomas && \
-    . /opt/ros/indigo/setup.sh && \
+    . /opt/ros/${ROS_DISTRO}/setup.sh && \
     mkdir -p /thomas/thomas_ws/src && \
     cd /thomas/thomas_ws/src && \ 
     catkin_init_workspace . && \
@@ -60,6 +60,8 @@ RUN addgroup --gid 1100 share && \
     git apply /tmp/ethzasl_icp_mapping.patch && \
     cd /thomas/thomas_ws && \
     catkin_make && \
+    echo '' >> ~/.bashrc && \
+    echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> ~/.bashrc && \
     echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
     echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
 
