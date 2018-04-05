@@ -35,7 +35,7 @@ sudo apt-get install -y nautilus-open-terminal
 sudo apt-get install -y gnome-terminal
 
 # Install linuxcan driver
-read -n 1 -p "Install linuxcan?(y/N)" comfirm
+read -n 1 -p "Install linuxcan?(y/N) " comfirm
 echo ''
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
@@ -47,7 +47,7 @@ if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
 fi
 
 # Prepare usb 
-read -n 1 -p "Install pointgrey driver?(y/N)" comfirm
+read -n 1 -p "Install pointgrey driver?(y/N) " comfirm
 echo ''
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
@@ -58,7 +58,7 @@ if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
 fi
 
 # Velodyne
-read -n 1 -p "Prepare velodyne network?(y/N)" comfirm
+read -n 1 -p "Prepare velodyne network?(y/N) " comfirm
 echo ''
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
@@ -68,22 +68,24 @@ fi
 
 # Prepare startup script
 echo '
-if [ -z `docker container ls -f name=thomas_os --format {{.ID}}` ]; then
-  read -t 5 -n 1 -p "start docker? (Y/n) " confirm
-  confirm=${confirm:-Y}
-  echo ''
-  if [ $confirm != 'n' ] && [ $confirm != 'N' ]; then
-    sh ~/docker_image/stop.sh
-    sh ~/docker_image/start.sh
-    sh ~/docker_image/into.sh
-  fi
-else
-  read -t 5 -n 1 -p "enter docker? (y/N) " confirm
-  confirm=${confirm:-N}
-  echo ''
-  if [ $confirm = 'y' ] || [ $confirm = 'Y' ]; then
-    sh ~/docker_image/into.sh
+if [ -z "${SSH_TTY}" ]; then
+  if [ -z `docker container ls -f name=thomas_os --format {{.ID}}` ]; then
+    read -t 5 -n 1 -p "start docker? (Y/n) " confirm
+    confirm=${confirm:-Y}
+    echo ''
+    if [ $confirm != 'n' ] && [ $confirm != 'N' ]; then
+      sh ~/docker_image/stop.sh
+      sh ~/docker_image/start.sh
+      sh ~/docker_image/into.sh
+    fi
+  else
+    read -t 5 -n 1 -p "enter docker? (y/N) " confirm
+    confirm=${confirm:-N}
+    echo ''
+    if [ $confirm = 'y' ] || [ $confirm = 'Y' ]; then
+      sh ~/docker_image/into.sh
+    fi
   fi
 fi
-' > ~/.bashrc
+' >> ~/.bashrc
 
