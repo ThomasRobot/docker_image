@@ -2,7 +2,7 @@
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Update source list
-sudo cp ${BASE_DIR}/common/sources.list.tsinghua /etc/apt/sources.list
+sudo cp ${BASE_DIR}/v1/sources.list.tsinghua /etc/apt/sources.list
 # sudo apt-get update # Already included in get-docker.sh
 
 # Install Docker
@@ -30,9 +30,9 @@ sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server
 sudo apt-get install -y terminator vim nautilus-open-terminal
 
 # Install linuxcan driver
-echo -n Install linuxcan?(y/N)
-read comfirm
-if [ $confirm == 'y' || $confirm == 'Y' ]; then
+read -n 1 -p "Install linuxcan?(y/N)" comfirm
+confirm=${confirm:-N}
+if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   sudo apt-get install -y build-essential
   sudo apt-get install -y linux-headers-`uname -r`
   cd /tmp
@@ -41,9 +41,9 @@ if [ $confirm == 'y' || $confirm == 'Y' ]; then
 fi
 
 # Prepare usb 
-echo -n Install pointgrey driver?(y/N)
-read comfirm
-if [ $confirm == 'y' || $confirm == 'Y' ]; then
+read -n 1 -p "Install pointgrey driver?(y/N)" comfirm
+confirm=${confirm:-N}
+if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   tar -xzvf ${BASE_DIR}/common/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
   sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
@@ -51,9 +51,9 @@ if [ $confirm == 'y' || $confirm == 'Y' ]; then
 fi
 
 # Velodyne
-echo -n Prepare velodyne network?(y/N)
-read comfirm
-if [ $confirm == 'y' || $confirm == 'Y' ]; then
+read -n 1 -p "Prepare velodyne network?(y/N)" comfirm
+confirm=${confirm:-N}
+if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   echo "Please add a wired connection, set ip to 192.168.0.*/24"
   nm-connection-editor -c -t "802-3-ethernet"
 fi
@@ -77,5 +77,5 @@ else
     sh ~/docker_image/into.sh
   fi
 fi
-' > .bashrc
+' > ~/.bashrc
 
