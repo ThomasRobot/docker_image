@@ -32,7 +32,7 @@ else
   PG_GRP_ID=''
 fi
 
-if [ -n `command -v nvidia-docker1` ]; then
+if [ -n "`command -v nvidia-docker`" ]; then
   DOCKER_CMD=nvidia-docker
   NV_SUFFIX="-nv"
 else
