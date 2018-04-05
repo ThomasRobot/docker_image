@@ -37,14 +37,14 @@ if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   sudo apt-get install -y linux-headers-`uname -r`
   cd /tmp
   rm -rf linuxcan
-  tar -xzf ${BASE_DIR}/common/linuxcan.tar.gz -C /tmp && cd /tmp/linuxcan && sudo make uninstall && make && sudo make install
+  tar -xzf ${BASE_DIR}/v1/linuxcan.tar.gz -C /tmp && cd /tmp/linuxcan && sudo make uninstall && make && sudo make install
 fi
 
 # Prepare usb 
 read -n 1 -p "Install pointgrey driver?(y/N)" comfirm
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
-  tar -xzvf ${BASE_DIR}/common/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
+  tar -xzvf ${BASE_DIR}/v2/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
   sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
   sudo update-grub
