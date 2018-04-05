@@ -68,7 +68,7 @@ fi
 
 # Prepare startup script
 echo '
-if [ -z "${SSH_TTY}" ]; then
+if [ -n "${SSH_TTY}" ]; then
   if [ -z `docker container ls -f name=thomas_os --format {{.ID}}` ]; then
     read -t 5 -n 1 -p "start docker? (Y/n) " confirm
     confirm=${confirm:-Y}
