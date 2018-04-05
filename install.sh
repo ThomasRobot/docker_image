@@ -1,9 +1,12 @@
+#!/bin/bash
 
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Update source list
-sudo cp ${BASE_DIR}/v1/sources.list.tsinghua /etc/apt/sources.list
+# sudo cp ${BASE_DIR}/v1/sources.list.tsinghua /etc/apt/sources.list
+cat ${BASE_DIR}/v1/sources.list.tsinghua | sed "s/trusty/`lsb_release -cs`/g" | sudo tee /etc/apt/sources.list
 # sudo apt-get update # Already included in get-docker.sh
+# sudo apt-get upgrade -y
 
 # Install Docker
 if [ -f "/usr/local/cuda/version.txt" ]; then
@@ -27,10 +30,13 @@ fi
 # Install some essential package
 # sudo apt-get upgrade -y
 sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server
-sudo apt-get install -y terminator vim nautilus-open-terminal
+sudo apt-get install -y terminator vim git
+sudo apt-get install -y nautilus-open-terminal
+sudo apt-get install -y gnome-terminal
 
 # Install linuxcan driver
 read -n 1 -p "Install linuxcan?(y/N)" comfirm
+echo ''
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   sudo apt-get install -y build-essential
@@ -42,6 +48,7 @@ fi
 
 # Prepare usb 
 read -n 1 -p "Install pointgrey driver?(y/N)" comfirm
+echo ''
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   tar -xzvf ${BASE_DIR}/v2/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
@@ -52,6 +59,7 @@ fi
 
 # Velodyne
 read -n 1 -p "Prepare velodyne network?(y/N)" comfirm
+echo ''
 confirm=${confirm:-N}
 if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
   echo "Please add a wired connection, set ip to 192.168.0.*/24"
