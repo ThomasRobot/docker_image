@@ -32,7 +32,7 @@ else
   PG_GRP_ID=''
 fi
 
-if [ -n `command -v nvidia-docker1` ]; then
+if [ -n "`command -v nvidia-docker`" ]; then
   DOCKER_CMD=nvidia-docker
   NV_SUFFIX="-nv"
 else
@@ -50,6 +50,7 @@ ${DOCKER_CMD} run -it \
                   -e DOCKER_GRP=$GRP \
                   -e DOCKER_GRP_ID=$GRP_ID \
                   -e QT_X11_NO_MITSHM=1 \
+                  -e ROS_IP=192.168.123.133 \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
                   --net host \
                   --hostname ${LOCAL_HOSTNAME} \
