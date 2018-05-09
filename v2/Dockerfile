@@ -29,3 +29,4 @@ RUN . /opt/ros/indigo/setup.sh && \
     git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
     cd /thomas/thomas_ws && \
     catkin_make
+
