@@ -2,10 +2,12 @@
 
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
+. "${BASE_DIR}/functions.sh"
+
 # Update source list
 function update_source_list () {
   cat ${BASE_DIR}/v1/sources.list.tsinghua | sed "s/trusty/`lsb_release -cs`/g" | sudo tee /etc/apt/sources.list
-  # sudo apt-get update # Already included in get-docker.sh
+  sudo apt-get update # Already included in get-docker.sh
   # sudo apt-get upgrade -y
 }
 
@@ -49,9 +51,10 @@ function install_linuxcan () {
 
 # Prepare usb 
 function install_pointgrey () {
+  sudo apt-get install libglademm-2.4-1c2a libgtkmm-2.4-1c2a
   tar -xzvf ${BASE_DIR}/v2/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
-  sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' grub | sudo tee /etc/default/grub
+  sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' /etc/default/grub | sudo tee /etc/default/grub
   sudo update-grub
 }
 
@@ -59,30 +62,6 @@ function install_pointgrey () {
 function install_velodyne () {
   echo "Please add a wired connection, set ip to 192.168.0.*/24"
   nm-connection-editor -c -t "803-3-ethernet"
-}
-
-function read_confirm_y () {
-  tips=$1
-  read -n 1 -p "${tips}?(Y/n) " comfirm
-  echo ''
-  confirm=${confirm:-Y}
-  if [ "$confirm" = 'n' ] || [ "$confirm" = 'N' ]; then
-    echo false
-  else
-    echo true
-  fi
-}
-
-function read_confirm_n () {
-  tips=$1
-  read -n 1 -p "${tips}?(y/N) " comfirm
-  echo ''
-  confirm=${confirm:-N}
-  if [ "$confirm" = 'y' ] || [ "$confirm" = 'Y' ]; then
-    echo true
-  else
-    echo false
-  fi
 }
 
 update_source_list
@@ -95,14 +74,14 @@ fi
 
 install_essential
 
-if [ $(read_confirm_n "Install linuxcan") ]; then
+if $(read_confirm_n "Install linuxcan") ; then
   install_linuxcan
 fi
 
-if [ $(read_confirm_n "Install pointgrey driver") ]; then
+if $(read_confirm_n "Install pointgrey driver") ; then
   install_pointgrey
 fi
 
-if [ $(read_confirm_n "Prepare velodyne network") ]; then
+if $(read_confirm_n "Prepare velodyne network") ; then
   install_velodyne
 fi
