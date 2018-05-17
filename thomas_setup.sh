@@ -1,3 +1,6 @@
+#!/bin/bash
+
+BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # 
 if [ -n "${TERM}" ]; then
@@ -6,16 +9,16 @@ if [ -n "${TERM}" ]; then
     confirm=${confirm:-Y}
     echo ''
     if [ $confirm != 'n' ] && [ $confirm != 'N' ]; then
-      sh ~/docker_image/stop.sh
-      sh ~/docker_image/start.sh
-      sh ~/docker_image/into.sh
+      sh ${BASE_DIR}/stop.sh
+      sh ${BASE_DIR}/start.sh
+      sh ${BASE_DIR}/into.sh
     fi
   else
     read -t 5 -n 1 -p "enter docker? (y/N) " confirm
     confirm=${confirm:-N}
     echo ''
     if [ $confirm = 'y' ] || [ $confirm = 'Y' ]; then
-      sh ~/docker_image/into.sh
+      sh ${BASE_DIR}/into.sh
     fi
   fi
 fi
