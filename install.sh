@@ -51,8 +51,9 @@ function install_linuxcan () {
 
 # Prepare usb 
 function install_pointgrey () {
-  sudo apt-get install libglademm-2.4-1c2a libgtkmm-2.4-1c2a
-  tar -xzvf ${BASE_DIR}/v2/flycapture*.tgz -C /tmp && cd /tmp/flycapture* && sh install_flycapture.sh
+  sudo apt-get install -y libraw1394-11 libgtkmm-2.4-1c2a libglademm-2.4-1c2a libgtkglextmm-x11-1.2-dev libgtkglextmm-x11-1.2 libusb-1.0-0 libglademm-2.4-dev
+  tar -xzvf ${BASE_DIR}/extras/flycapture*.tgz -C /tmp && cd /tmp/flycapture*
+  echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
   sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' /etc/default/grub | sudo tee /etc/default/grub
   sudo update-grub
@@ -62,6 +63,7 @@ function install_pointgrey () {
 function install_velodyne () {
   echo "Please add a wired connection, set ip to 192.168.0.*/24"
   nm-connection-editor -c -t "803-3-ethernet"
+  # nmcli con add type ethernet ifname "eth0" con-name "Velodyne" ip4 192.168.0.100
 }
 
 update_source_list
