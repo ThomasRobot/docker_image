@@ -8,6 +8,9 @@ fi
 
 if [ -d $HOME/catkin_ws ]; then
   CATKIN_WS="-v $HOME/catkin_ws:${DOCKER_HOME}/catkin_ws"
+  if [ -d "/media/$USER/THOMAS/src" ]; then
+    CATKIN_WS="${CATKIN_WS} -v /media/$USER/THOMAS/src:${DOCKER_HOME}/catkin_ws/src"
+  fi
 else
   CATKIN_WS=""
 fi
