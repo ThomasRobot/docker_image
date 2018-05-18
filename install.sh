@@ -34,10 +34,7 @@ function install_docker() {
 # Install some essential package
 function install_essential () {
   # sudo apt-get upgrade -y
-  sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server
-  sudo apt-get install -y terminator vim git
-  sudo apt-get install -y nautilus-open-terminal
-  sudo apt-get install -y gnome-terminal
+  sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server terminator vim git nautilus-open-terminal gnome-terminal
 }
 
 # Install linuxcan driver
