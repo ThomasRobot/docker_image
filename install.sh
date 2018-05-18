@@ -50,7 +50,8 @@ install_linuxcan () {
 install_pointgrey () {
   sudo apt-get install -y libraw1394-11 libgtkmm-2.4-1c2a libglademm-2.4-1c2a libgtkglextmm-x11-1.2-dev libgtkglextmm-x11-1.2 libusb-1.0-0 libglademm-2.4-dev
   tar -xzvf ${BASE_DIR}/extras/flycapture*.tgz -C /tmp && cd /tmp/flycapture*
-  echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
+  # echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
+  sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
   sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' /etc/default/grub | sudo tee /etc/default/grub
   sudo update-grub
