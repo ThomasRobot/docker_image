@@ -5,14 +5,14 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 . "${BASE_DIR}/functions.sh"
 
 # Update source list
-function update_source_list () {
+update_source_list () {
   cat ${BASE_DIR}/v1/sources.list.tsinghua | sed "s/trusty/`lsb_release -cs`/g" | sudo tee /etc/apt/sources.list
   sudo apt-get update # Already included in get-docker.sh
   # sudo apt-get upgrade -y
 }
 
 # Install Docker
-function install_docker() {
+install_docker() {
   if [ -f "/usr/local/cuda/version.txt" ]; then
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
     distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
@@ -32,13 +32,13 @@ function install_docker() {
 }
 
 # Install some essential package
-function install_essential () {
+install_essential () {
   # sudo apt-get upgrade -y
   sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server terminator vim git nautilus-open-terminal gnome-terminal
 }
 
 # Install linuxcan driver
-function install_linuxcan () {
+install_linuxcan () {
   sudo apt-get install -y build-essential
   sudo apt-get install -y linux-headers-`uname -r`
   cd /tmp
@@ -47,7 +47,7 @@ function install_linuxcan () {
 }
 
 # Prepare usb 
-function install_pointgrey () {
+install_pointgrey () {
   sudo apt-get install -y libraw1394-11 libgtkmm-2.4-1c2a libglademm-2.4-1c2a libgtkglextmm-x11-1.2-dev libgtkglextmm-x11-1.2 libusb-1.0-0 libglademm-2.4-dev
   tar -xzvf ${BASE_DIR}/extras/flycapture*.tgz -C /tmp && cd /tmp/flycapture*
   echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
@@ -57,7 +57,7 @@ function install_pointgrey () {
 }
 
 # Velodyne
-function install_velodyne () {
+install_velodyne () {
   echo "Please add a wired connection, set ip to 192.168.0.*/24"
   nm-connection-editor -c -t "803-3-ethernet"
   # nmcli con add type ethernet ifname "eth0" con-name "Velodyne" ip4 192.168.0.100
