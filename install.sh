@@ -13,6 +13,8 @@ function update_source_list () {
 
 # Install Docker
 function install_docker() {
+
+  # 
   if [ -f "/usr/local/cuda/version.txt" ]; then
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
     distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
@@ -27,8 +29,11 @@ function install_docker() {
     sudo add-apt-repository "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable"
     sudo apt-get update
     sudo apt-get install -y docker-ce
-    sudo usermod -aG docker $USER
   fi
+
+  # 
+  sudo usermod -aG docker $USER
+  systemctl enable docker
 }
 
 # Install some essential package
