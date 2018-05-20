@@ -8,9 +8,11 @@ fi
 
 if [ -d $HOME/catkin_ws ]; then
   CATKIN_WS="-v $HOME/catkin_ws:${DOCKER_HOME}/catkin_ws"
-  if [ -d "/media/$USER/THOMAS/src" ]; then
-    CATKIN_WS="${CATKIN_WS} -v /media/$USER/THOMAS/src:${DOCKER_HOME}/catkin_ws/src"
-  fi
+  for disk in `ls /media/$USER`; do
+    if [ -f "/media/$USER/${disk}/THOMAS_WORKSPACE" ] && [ -d "/media/$USER/${disk}/src" ]; then
+      CATKIN_WS="${CATKIN_WS} -v /media/$USER/${disk}/src:${DOCKER_HOME}/catkin_ws/src"
+    fi
+  done
 else
   CATKIN_WS=""
 fi
