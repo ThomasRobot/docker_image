@@ -8,6 +8,9 @@ fi
 
 if [ -d $HOME/catkin_ws ]; then
   CATKIN_WS="-v $HOME/catkin_ws:${DOCKER_HOME}/catkin_ws"
+  if [ -d "/media/$USER/THOMAS/src" ]; then
+    CATKIN_WS="${CATKIN_WS} -v /media/$USER/THOMAS/src:${DOCKER_HOME}/catkin_ws/src"
+  fi
 else
   CATKIN_WS=""
 fi
@@ -50,7 +53,7 @@ ${DOCKER_CMD} run -it \
                   -e DOCKER_GRP=$GRP \
                   -e DOCKER_GRP_ID=$GRP_ID \
                   -e QT_X11_NO_MITSHM=1 \
-                  -e ROS_IP=192.168.123.133 \
+                  -e ROS_IP=192.168.123.120 \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
                   --net host \
                   --hostname ${LOCAL_HOSTNAME} \
