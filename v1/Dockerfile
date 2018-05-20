@@ -17,8 +17,14 @@ RUN apt-get update && apt-get install -y \
     libgoogle-glog-dev \
     vim \
     cmake-curses-gui \
-    usbutils && \
-    rm -rf /var/lib/apt/lists/*
+    usbutils
+
+# on-my-zsh
+RUN apt-get install -y zsh && \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
+    chsh -s $(grep /zsh$ /etc/shells | tail -1) || \
+    chsh -s $(grep /zsh$ /etc/shells | tail -1)
+COPY zshrc.example /root/.zshrc
 
 COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
 RUN cd /tmp && \
@@ -63,7 +69,13 @@ RUN addgroup --gid 1100 share && \
     echo '' >> ~/.bashrc && \
     echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> ~/.bashrc && \
     echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
-    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc
+    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc && \
+    echo '' >> ~/.zshrc && \
+    echo 'source /opt/ros/${ROS_DISTRO}/setup.zsh' >> ~/.zshrc && \
+    echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.zshrc && \
+    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.zshrc
+
+RUN rm -rf /var/lib/apt/lists/*
 
 COPY thomas_entrypoint.sh /
 ENTRYPOINT ["/thomas_entrypoint.sh"]

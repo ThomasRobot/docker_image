@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/zsh
+
+BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 if [ "$USER" = "root" ]; then
   DOCKER_HOME="/root"
@@ -55,7 +57,7 @@ ${DOCKER_CMD} run -it \
                   -e DOCKER_GRP=$GRP \
                   -e DOCKER_GRP_ID=$GRP_ID \
                   -e QT_X11_NO_MITSHM=1 \
-                  -e ROS_IP=192.168.123.120 \
+                  -e ROS_IP=192.168.123.250 \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
                   --net host \
                   --hostname ${LOCAL_HOSTNAME} \
@@ -68,7 +70,7 @@ ${DOCKER_CMD} run -it \
                   ${PG_GRP_ID} \
                   ${CATKIN_WS} \
                   -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
+                  -v ${BASE_DIR}/scripts:/thomas/scripts \
                   -w ${DOCKER_HOME} \
                   thomas:v3${NV_SUFFIX} \
-                  /bin/bash -c "source /opt/ros/indigo/setup.bash && roscore"
-
+                  /bin/zsh -c "source /opt/ros/indigo/setup.zsh && roscore"
