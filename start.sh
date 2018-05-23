@@ -57,7 +57,6 @@ ${DOCKER_CMD} run -it \
                   -e DOCKER_GRP=$GRP \
                   -e DOCKER_GRP_ID=$GRP_ID \
                   -e QT_X11_NO_MITSHM=1 \
-                  -e ROS_IP=192.168.123.250 \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
                   --net host \
                   --hostname ${LOCAL_HOSTNAME} \
@@ -74,3 +73,4 @@ ${DOCKER_CMD} run -it \
                   -w ${DOCKER_HOME} \
                   thomas:v3${NV_SUFFIX} \
                   /bin/zsh -c "source /opt/ros/indigo/setup.zsh && roscore"
+"source /opt/ros/indigo/setup.zsh && roscore"
