@@ -73,4 +73,4 @@ ${DOCKER_CMD} run -it \
                   -w ${DOCKER_HOME} \
                   thomas:v3${NV_SUFFIX} \
                   /bin/zsh -c "source /opt/ros/indigo/setup.zsh && roscore"
-"source /opt/ros/indigo/setup.zsh && roscore"
+
