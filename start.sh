@@ -62,6 +62,7 @@ ${DOCKER_CMD} run -it \
                   --hostname ${LOCAL_HOSTNAME} \
                   --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
                   --add-host ${HOST_HOSTNAME}:127.0.0.1 \
+                  --expose=12345 \
                   -v /media:/media \
                   -v /etc/localtime:/etc/localtime:ro \
                   -v /dev:/dev \
