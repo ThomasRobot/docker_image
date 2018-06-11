@@ -17,7 +17,7 @@ ZSH_THEME="af-magic"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -83,3 +83,12 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+source /opt/ros/${ROS_DISTRO}/setup.zsh
+source /thomas/thomas_ws/install/setup.sh
+
+if [ -f ~/catkin_ws/install/setup.sh ]; then
+  source ~/catkin_ws/install/setup.sh
+elif [ -f ~/catkin_ws/devel/setup.sh ]; then
+  source ~/catkin_ws/devel/setup.sh
+fi

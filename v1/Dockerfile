@@ -1,8 +1,12 @@
 FROM osrf/ros:indigo-desktop-full
 
+# Update sources
 COPY sources.list.ustc /etc/apt/sources.list
 COPY ros-latest.list.ustc /etc/apt/sources.list.d/ros-latest.list
-RUN apt-get update && apt-get install -y \
+RUN apt-get update
+
+# Install ros packages
+RUN apt-get install -y \
     ros-indigo-move-base \
     ros-indigo-gps-common \
     ros-indigo-tf2-eigen \
@@ -11,22 +15,38 @@ RUN apt-get update && apt-get install -y \
     ros-indigo-keyboard \
     ros-indigo-joy \
     ros-indigo-joy-teleop \
-    ros-indigo-gps-common \
+    ros-indigo-gps-common
+
+# Install depends
+RUN apt-get install -y \
     libgit2-dev \
     libsuitesparse-dev \
     libgoogle-glog-dev \
+    python-serial \
+    libpcap-dev \
+    libraw1394-11 \
+    libgtkmm-2.4-1c2a \
+    libglademm-2.4-1c2a \
+    libgtkglextmm-x11-1.2-dev \
+    libgtkglextmm-x11-1.2 \
+    libusb-1.0-0 \
+    libglademm-2.4-dev
+
+# Install useful tools
+RUN apt-get install -y \
     vim \
     cmake-curses-gui \
-    usbutils
+    usbutils \
+    gdb
 
 # on-my-zsh
 RUN apt-get install -y zsh && \
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    chsh -s $(grep /zsh$ /etc/shells | tail -1) || \
-    chsh -s $(grep /zsh$ /etc/shells | tail -1)
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 COPY zshrc.example /root/.zshrc
 
+# 3rd party libraries
 COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
+COPY flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN cd /tmp && \
     git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
     cd libnabo && \
@@ -52,7 +72,18 @@ RUN cd /tmp && \
     cmake -DG2O_BUILD_APPS=OFF -DG2O_BUILD_EXAMPLES=OFF .. && \
     make -j && \
     make install && \
-    rm -rf ~/.cmake 
+    tar -xzvf /tmp/flycapture2*.tgz -C /tmp && \
+    cd /tmp/flycapture2* && \
+    dpkg -i libflycapture-2* && \
+    dpkg -i libflycapturegui-2* && \
+    dpkg -i libflycapture-c-2* && \
+    dpkg -i libflycapturegui-c-2* && \
+    dpkg -i libmultisync-2* && \
+    dpkg -i flycap-2* && \
+    dpkg -i flycapture-doc-2* && \
+    dpkg -i updatorgui*
+
+# Create thomas workspace
 RUN addgroup --gid 1100 share && \
     mkdir /thomas && \
     chgrp share /thomas && \
@@ -62,20 +93,22 @@ RUN addgroup --gid 1100 share && \
     cd /thomas/thomas_ws/src && \ 
     catkin_init_workspace . && \
     git clone -b indigo_devel --single-branch http://gitee.com/ZJRLMirrors/ethzasl_icp_mapping.git && \
+    git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
     cd ethzasl_icp_mapping && \
     git apply /tmp/ethzasl_icp_mapping.patch && \
     cd /thomas/thomas_ws && \
     catkin_make && \
-    echo '' >> ~/.bashrc && \
-    echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> ~/.bashrc && \
-    echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.bashrc && \
-    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.bashrc && \
-    echo '' >> ~/.zshrc && \
-    echo 'source /opt/ros/${ROS_DISTRO}/setup.zsh' >> ~/.zshrc && \
-    echo 'source /thomas/thomas_ws/devel/setup.sh' >> ~/.zshrc && \
-    echo 'if [ -f ~/catkin_ws/devel/setup.sh ]; then source ~/catkin_ws/devel/setup.sh; fi' >> ~/.zshrc
+    catkin_make install
 
-RUN rm -rf /var/lib/apt/lists/*
+# Clean
+RUN rm -rf /var/lib/apt/lists/* && \
+    rm -rf /thomas/thomas_ws/build && \
+    rm -rf /thomas/thomas_ws/devel && \
+    rm -rf /thomas/thomas_ws/src && \
+    rm -rf /tmp/* && \
+    rm -rf ~/.cmake && \
+    rm /ros_entrypoint.sh
 
+# New entrypoint
 COPY thomas_entrypoint.sh /
 ENTRYPOINT ["/thomas_entrypoint.sh"]
