@@ -98,7 +98,7 @@ RUN addgroup --gid 1100 share && \
     git apply /tmp/ethzasl_icp_mapping.patch && \
     cd /thomas/thomas_ws && \
     catkin_make && \
-    catkin_make install
+    catkin_make -DCMAKE_INSTALL_PREFIX=/opt/thomas install
 
 # Clean
 RUN rm -rf /var/lib/apt/lists/* && \

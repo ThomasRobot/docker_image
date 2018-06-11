@@ -72,6 +72,6 @@ ${DOCKER_CMD} run -it \
                   -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
                   -v ${BASE_DIR}/scripts:/thomas/scripts \
                   -w ${DOCKER_HOME} \
-                  thomas:v3${NV_SUFFIX} \
+                  thomas:base${NV_SUFFIX} \
                   /bin/zsh -c "source /opt/ros/indigo/setup.zsh && roscore"
 

@@ -1,4 +1,4 @@
-FROM thomas:v3
+FROM thomas:base
 
 # nvidia-docker hooks
 LABEL com.nvidia.volumes.needed="nvidia_driver"
