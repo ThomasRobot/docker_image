@@ -84,19 +84,15 @@ RUN cd /tmp && \
     dpkg -i updatorgui*
 
 # Create thomas workspace
-RUN addgroup --gid 1100 share && \
-    mkdir /thomas && \
-    chgrp share /thomas && \
-    chmod g+rwx /thomas && \
-    . /opt/ros/${ROS_DISTRO}/setup.sh && \
-    mkdir -p /thomas/thomas_ws/src && \
-    cd /thomas/thomas_ws/src && \ 
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
+    mkdir -p /tmp/thomas_ws/src && \
+    cd /tmp//thomas_ws/src && \ 
     catkin_init_workspace . && \
     git clone -b indigo_devel --single-branch http://gitee.com/ZJRLMirrors/ethzasl_icp_mapping.git && \
     git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
     cd ethzasl_icp_mapping && \
     git apply /tmp/ethzasl_icp_mapping.patch && \
-    cd /thomas/thomas_ws && \
+    cd /tmp/thomas_ws && \
     catkin_make && \
     catkin_make -DCMAKE_INSTALL_PREFIX=/opt/thomas install
 
