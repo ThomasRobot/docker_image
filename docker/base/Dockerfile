@@ -45,7 +45,6 @@ RUN apt-get install -y zsh && \
 COPY zshrc.example /root/.zshrc
 
 # 3rd party libraries
-COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
 COPY flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN cd /tmp && \
     git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
@@ -84,6 +83,7 @@ RUN cd /tmp && \
     dpkg -i updatorgui*
 
 # Create thomas workspace
+COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
     mkdir -p /tmp/thomas_ws/src && \
     cd /tmp//thomas_ws/src && \ 
@@ -94,7 +94,8 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
     git apply /tmp/ethzasl_icp_mapping.patch && \
     cd /tmp/thomas_ws && \
     catkin_make && \
-    catkin_make -DCMAKE_INSTALL_PREFIX=/opt/thomas install
+    catkin_make -DCMAKE_INSTALL_PREFIX=/opt/thomas install && \
+    ln -s /opt/thomas/include/libpointmatcher_ros /opt/thomas/include/pointmatcher_ros
 
 # Clean
 RUN rm -rf /var/lib/apt/lists/* && \
