@@ -32,13 +32,6 @@ RUN apt-get install -y \
     libusb-1.0-0 \
     libglademm-2.4-dev
 
-# Install useful tools
-RUN apt-get install -y \
-    vim \
-    cmake-curses-gui \
-    usbutils \
-    gdb
-
 # on-my-zsh
 RUN apt-get install -y zsh && \
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -96,6 +89,14 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
     catkin_make && \
     catkin_make -DCMAKE_INSTALL_PREFIX=/opt/thomas install && \
     ln -s /opt/thomas/include/libpointmatcher_ros /opt/thomas/include/pointmatcher_ros
+
+# Install useful tools
+RUN apt-get install -y \
+    vim \
+    cmake-curses-gui \
+    usbutils \
+    gdb \
+    qtcreator
 
 # Clean
 RUN rm -rf /var/lib/apt/lists/* && \
