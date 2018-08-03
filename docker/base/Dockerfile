@@ -15,7 +15,8 @@ RUN apt-get install -y \
     ros-indigo-keyboard \
     ros-indigo-joy \
     ros-indigo-joy-teleop \
-    ros-indigo-gps-common
+    ros-indigo-gps-common \
+    ros-indigo-map-server
 
 # Install depends
 RUN apt-get install -y \
@@ -37,28 +38,41 @@ RUN apt-get install -y zsh && \
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 COPY zshrc.example /root/.zshrc
 
+# Install useful tools
+RUN apt-get install -y \
+    vim \
+    cmake-curses-gui \
+    usbutils \
+    gdb \
+    qtcreator
+
+#    git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
+#    git clone http://gitee.com/ZJRLMirrors/libpointmatcher.git && \
+
 # 3rd party libraries
 COPY flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN cd /tmp && \
-    git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
+    git clone http://github.com/ethz-asl/libnabo.git && \
     cd libnabo && \
+    git checkout a59cd958b && \
     mkdir build && \
     cd build && \
     cmake .. && \
     make -j && \
     make install && \
     cd /tmp && \
-    git clone http://gitee.com/ZJRLMirrors/libpointmatcher.git && \
+    git clone http://github.com/ethz-asl/libpointmatcher.git && \
     cd libpointmatcher && \
+    git checkout 00004bd41 && \
     mkdir build && \
     cd build && \
     cmake .. && \
     make -j && \
     make install && \
     cd /tmp && \
-    git clone http://gitee.com/ZJRLMirrors/g2o.git && \
+    git clone http://github.com/RainerKuemmerle/g2o.git && \
     cd g2o && \
-    git checkout 2e35669 && \
+    git checkout 2e3566968 && \
     mkdir build && \
     cd build && \
     cmake -DG2O_BUILD_APPS=OFF -DG2O_BUILD_EXAMPLES=OFF .. && \
@@ -81,7 +95,7 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
     mkdir -p /tmp/thomas_ws/src && \
     cd /tmp//thomas_ws/src && \ 
     catkin_init_workspace . && \
-    git clone -b indigo_devel --single-branch http://gitee.com/ZJRLMirrors/ethzasl_icp_mapping.git && \
+    git clone -b indigo_devel --single-branch http://github.com/ethz-asl/ethzasl_icp_mapping.git && \
     git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
     cd ethzasl_icp_mapping && \
     git apply /tmp/ethzasl_icp_mapping.patch && \
@@ -89,14 +103,6 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
     catkin_make && \
     catkin_make -DCMAKE_INSTALL_PREFIX=/opt/thomas install && \
     ln -s /opt/thomas/include/libpointmatcher_ros /opt/thomas/include/pointmatcher_ros
-
-# Install useful tools
-RUN apt-get install -y \
-    vim \
-    cmake-curses-gui \
-    usbutils \
-    gdb \
-    qtcreator
 
 # Clean
 RUN rm -rf /var/lib/apt/lists/* && \
