@@ -46,9 +46,6 @@ RUN apt-get install -y \
     gdb \
     qtcreator
 
-#    git clone http://gitee.com/ZJRLMirrors/libnabo.git && \
-#    git clone http://gitee.com/ZJRLMirrors/libpointmatcher.git && \
-
 # 3rd party libraries
 COPY flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
 RUN cd /tmp && \
@@ -93,7 +90,7 @@ RUN cd /tmp && \
 COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
     mkdir -p /tmp/thomas_ws/src && \
-    cd /tmp//thomas_ws/src && \ 
+    cd /tmp/thomas_ws/src && \
     catkin_init_workspace . && \
     git clone -b indigo_devel --single-branch http://github.com/ethz-asl/ethzasl_icp_mapping.git && \
     git clone --recursive https://github.com/ThomasRobot/thomas_sensor_platform.git && \
@@ -106,9 +103,6 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
 
 # Clean
 RUN rm -rf /var/lib/apt/lists/* && \
-    rm -rf /thomas/thomas_ws/build && \
-    rm -rf /thomas/thomas_ws/devel && \
-    rm -rf /thomas/thomas_ws/src && \
     rm -rf /tmp/* && \
     rm -rf ~/.cmake && \
     rm /ros_entrypoint.sh
