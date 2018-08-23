@@ -6,9 +6,9 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Update source list
 function update_source_list () {
-  cat ${BASE_DIR}/v1/sources.list.tsinghua | sed "s/trusty/`lsb_release -cs`/g" | sudo tee /etc/apt/sources.list
+  cat ${BASE_DIR}/docker/base/sources.list.tsinghua | sed "s/trusty/`lsb_release -cs`/g" | sudo tee /etc/apt/sources.list
   sudo apt-get update # Already included in get-docker.sh
-  # sudo apt-get upgrade -y
+  sudo apt-get upgrade -y
 }
 
 # Install Docker
@@ -39,7 +39,7 @@ function install_docker() {
 # Install some essential package
 function install_essential () {
   # sudo apt-get upgrade -y
-  sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server terminator vim git nautilus-open-terminal gnome-terminal
+  sudo apt-get install -y language-pack-en language-pack-zh-hans openssh-server terminator vim git gnome-terminal
 }
 
 # Install linuxcan driver
@@ -53,12 +53,20 @@ function install_linuxcan () {
 
 # Prepare usb 
 function install_pointgrey () {
-  sudo apt-get install -y libraw1394-11 libgtkmm-2.4-1c2a libglademm-2.4-1c2a libgtkglextmm-x11-1.2-dev libgtkglextmm-x11-1.2 libusb-1.0-0 libglademm-2.4-dev
-  tar -xzvf ${BASE_DIR}/extras/flycapture*.tgz -C /tmp && cd /tmp/flycapture*
+  sudo apt-get install -y libraw1394-11 libavcodec-ffmpeg56 libavformat-ffmpeg56 libswscale-ffmpeg3 libswresample-ffmpeg1 libavutil-ffmpeg54 libgtkmm-2.4-dev libglademm-2.4-dev libgtkglextmm-x11-1.2-dev libusb-1.0-0
+  tar -xzvf ${BASE_DIR}/docker/base/flycapture*.tgz -C /tmp && cd /tmp/flycapture*
   echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
   sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' /etc/default/grub | sudo tee /etc/default/grub
   sudo update-grub
+}
+
+# Prepare usb 
+function install_realsense () {
+  sudo apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C8B3A55A6F3EFCDE
+  sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main" -u
+  sudo apt-get update
+  sudo apt-get install -y librealsense2-dkms librealsense2-utils
 }
 
 # Velodyne
@@ -84,6 +92,10 @@ fi
 
 if $(read_confirm_n "Install pointgrey driver") ; then
   install_pointgrey
+fi
+
+if $(read_confirm_n "Install realsense driver") ; then
+  install_realsense
 fi
 
 if $(read_confirm_n "Prepare velodyne network") ; then
