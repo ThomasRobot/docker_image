@@ -1,4 +1,4 @@
-FROM osrf/ros:indigo-desktop-full
+FROM osrf/ros:kinetic-desktop-full
 
 # Update sources
 COPY sources.list.ustc /etc/apt/sources.list
@@ -7,31 +7,34 @@ RUN apt-get update
 
 # Install ros packages
 RUN apt-get install -y \
-    ros-indigo-move-base \
-    ros-indigo-gps-common \
-    ros-indigo-tf2-eigen \
-    ros-indigo-diff-drive-controller \
-    ros-indigo-controller-manager \
-    ros-indigo-keyboard \
-    ros-indigo-joy \
-    ros-indigo-joy-teleop \
-    ros-indigo-gps-common \
-    ros-indigo-map-server
+    ros-kinetic-move-base \
+    ros-kinetic-gps-common \
+    ros-kinetic-tf2-eigen \
+    ros-kinetic-diff-drive-controller \
+    ros-kinetic-controller-manager \
+    ros-kinetic-joy \
+    ros-kinetic-joy-teleop \
+    ros-kinetic-gps-common \
+    ros-kinetic-map-server \
+    ros-kinetic-tf2-sensor-msgs
 
 # Install depends
 RUN apt-get install -y \
-    libgit2-dev \
+    libopencv-dev \
     libsuitesparse-dev \
     libgoogle-glog-dev \
     python-serial \
     libpcap-dev \
     libraw1394-11 \
-    libgtkmm-2.4-1c2a \
-    libglademm-2.4-1c2a \
+    libavcodec-ffmpeg56 \
+    libavformat-ffmpeg56 \
+    libswscale-ffmpeg3 \
+    libswresample-ffmpeg1 \
+    libavutil-ffmpeg54 \
+    libgtkmm-2.4-dev \
+    libglademm-2.4-dev \
     libgtkglextmm-x11-1.2-dev \
-    libgtkglextmm-x11-1.2 \
-    libusb-1.0-0 \
-    libglademm-2.4-dev
+    libusb-1.0-0
 
 # on-my-zsh
 RUN apt-get install -y zsh && \
@@ -44,11 +47,24 @@ RUN apt-get install -y \
     cmake-curses-gui \
     usbutils \
     gdb \
-    qtcreator
+    qtcreator \
+    sudo
 
 # 3rd party libraries
-COPY flycapture2-2.9.3.43-amd64-pkg.tgz /tmp
-RUN cd /tmp && \
+COPY flycapture2-2.12.3.31-amd64-pkg.tgz /tmp
+RUN tar -xzvf /tmp/flycapture2*.tgz -C /tmp && \
+    cd /tmp/flycapture2* && \
+    dpkg -i libptgreyvideoencoder-2* && \
+    dpkg -i libflycapture-2* && \
+    dpkg -i libflycapturegui-2* && \
+    dpkg -i libflycapture-c-2* && \
+    dpkg -i libflycapturegui-c-2* && \
+    dpkg -i libmultisync-2* && \
+    dpkg -i libmultisync-c-2* && \
+    dpkg -i flycap-2* && \
+    dpkg -i flycapture-doc-2* && \
+    dpkg -i updatorgui* &&\
+    cd /tmp && \
     git clone http://github.com/ethz-asl/libnabo.git && \
     cd libnabo && \
     git checkout a59cd958b && \
@@ -75,16 +91,15 @@ RUN cd /tmp && \
     cmake -DG2O_BUILD_APPS=OFF -DG2O_BUILD_EXAMPLES=OFF .. && \
     make -j && \
     make install && \
-    tar -xzvf /tmp/flycapture2*.tgz -C /tmp && \
-    cd /tmp/flycapture2* && \
-    dpkg -i libflycapture-2* && \
-    dpkg -i libflycapturegui-2* && \
-    dpkg -i libflycapture-c-2* && \
-    dpkg -i libflycapturegui-c-2* && \
-    dpkg -i libmultisync-2* && \
-    dpkg -i flycap-2* && \
-    dpkg -i flycapture-doc-2* && \
-    dpkg -i updatorgui*
+    cd /tmp && \
+    git clone http://github.com/libgit2/libgit2.git && \
+    cd libgit2 && \
+    git checkout v0.19.0 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make -j && \
+    make install
 
 # Create thomas workspace
 COPY ethzasl_icp_mapping.patch /tmp/ethzasl_icp_mapping.patch
@@ -110,3 +125,4 @@ RUN rm -rf /var/lib/apt/lists/* && \
 # New entrypoint
 COPY thomas_entrypoint.sh /
 ENTRYPOINT ["/thomas_entrypoint.sh"]
+
