@@ -1,6 +1,6 @@
 FROM thomas:space
 
 RUN apt-get update && \
-    apt-get install -y ros-indigo-jackal-simulator ros-indigo-jackal-navigation ros-indigo-jackal-desktop && \
+    apt-get install -y ros-kinetic-jackal-simulator ros-kinetic-jackal-navigation ros-kinetic-jackal-desktop && \
     rm -rf /var/lib/apt/lists/*
 

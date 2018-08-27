@@ -9,6 +9,5 @@ RUN sh -c 'echo "yaml https://raw.githubusercontent.com/magazino/pylon_camera/ki
 RUN apt-get install -y python-software-properties software-properties-common && \
     apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C8B3A55A6F3EFCDE && \
     add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main" -u && \
-    apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg
-
+    apt-get install -y librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg ros-kinetic-rgbd-launch
 RUN rm -rf /var/lib/apt/lists/*
