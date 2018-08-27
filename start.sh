@@ -30,10 +30,10 @@ GRP_ID=$(id -g)
 HOST_HOSTNAME=`hostname`
 LOCAL_HOSTNAME=docker-on-${HOST_HOSTNAME}
 
-PG_GRP='pgrimaging'
-if grep -q ${PG_GRP} /etc/group; then
+PG_GRP='flirimaging'
+if [ -n $(grep ${PG_GRP} /etc/group) ]; then
+  PG_GRP_ID="-e PG_GRP_ID=`grep ${PG_GRP} /etc/group | cut -d':' -f 3`"
   PG_GRP="-e PG_GRP=${PG_GRP}"
-  PG_GRP_ID="-e PG_GRP_ID=`grep pgrimaging /etc/group | cut -d':' -f 3`"
 else
   PG_GRP=''
   PG_GRP_ID=''
@@ -73,5 +73,5 @@ ${DOCKER_CMD} run -it \
                   -v ${BASE_DIR}/scripts:/thomas/scripts \
                   -w ${DOCKER_HOME} \
                   thomas:space${NV_SUFFIX} \
-                  /bin/zsh -c "source /opt/ros/indigo/setup.zsh && roscore"
+                  /bin/zsh -c 'source /opt/ros/${ROS_DISTRO}/setup.zsh && roscore'
 
