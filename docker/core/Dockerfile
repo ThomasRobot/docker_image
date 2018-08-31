@@ -7,16 +7,16 @@ RUN apt-get update
 
 # Install ros packages
 RUN apt-get install -y \
-    ros-kinetic-move-base \
-    ros-kinetic-gps-common \
-    ros-kinetic-tf2-eigen \
-    ros-kinetic-diff-drive-controller \
-    ros-kinetic-controller-manager \
-    ros-kinetic-joy \
-    ros-kinetic-joy-teleop \
-    ros-kinetic-gps-common \
-    ros-kinetic-map-server \
-    ros-kinetic-tf2-sensor-msgs
+    ros-${ROS_DISTRO}-move-base \
+    ros-${ROS_DISTRO}-gps-common \
+    ros-${ROS_DISTRO}-tf2-eigen \
+    ros-${ROS_DISTRO}-diff-drive-controller \
+    ros-${ROS_DISTRO}-controller-manager \
+    ros-${ROS_DISTRO}-joy \
+    ros-${ROS_DISTRO}-joy-teleop \
+    ros-${ROS_DISTRO}-gps-common \
+    ros-${ROS_DISTRO}-map-server \
+    ros-${ROS_DISTRO}-tf2-sensor-msgs
 
 # Install depends
 RUN apt-get install -y \
