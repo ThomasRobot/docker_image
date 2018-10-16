@@ -23,6 +23,11 @@ if [ ! -d $HOME/.thomas ]; then
   mkdir -p $HOME/.thomas
 fi
 
+ADDITION_MOUNTS=""
+if [ -d $HOME/.gazebo ]; then
+  ADDITION_MOUNTS="${ADDITION_MOUNTS} -v $HOME/.gazebo:${DOCKER_HOME}/.gazebo"
+fi
+
 USER_ID=$(id -u)
 GRP=$(id -g -n)
 GRP_ID=$(id -g)
@@ -47,6 +52,11 @@ else
   NV_SUFFIX=""
 fi
 
+#                   --net host \
+#                   --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
+#                   --add-host ${HOST_HOSTNAME}:127.0.0.1 \
+#                   --expose=12345 \
+
 ${DOCKER_CMD} run -it \
                   -d \
                   --privileged \
@@ -58,20 +68,17 @@ ${DOCKER_CMD} run -it \
                   -e DOCKER_GRP_ID=$GRP_ID \
                   -e QT_X11_NO_MITSHM=1 \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-                  --net host \
                   --hostname ${LOCAL_HOSTNAME} \
-                  --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
-                  --add-host ${HOST_HOSTNAME}:127.0.0.1 \
-                  --expose=12345 \
                   -v /media:/media \
                   -v /etc/localtime:/etc/localtime:ro \
                   -v /dev:/dev \
                   ${PG_GRP} \
                   ${PG_GRP_ID} \
                   ${CATKIN_WS} \
+                  ${ADDITION_MOUNTS} \
                   -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
                   -v ${BASE_DIR}/scripts:/thomas/scripts \
                   -w ${DOCKER_HOME} \
-                  thomas:space${NV_SUFFIX} \
+                  thomas:simulation${NV_SUFFIX} \
                   /bin/zsh -c 'source /opt/ros/${ROS_DISTRO}/setup.zsh && roscore'
 
