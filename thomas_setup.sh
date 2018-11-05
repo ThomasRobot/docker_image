@@ -9,7 +9,7 @@ if [ -n "${TERM}" ]; then
     confirm=${confirm:-Y}
     echo ''
     if [ $confirm != 'n' ] && [ $confirm != 'N' ]; then
-      sh ${BASE_DIR}/stop.sh > /dev/null
+      sh ${BASE_DIR}/stop.sh > /dev/null 2>&1
       sh ${BASE_DIR}/start.sh
       sh ${BASE_DIR}/into.sh
     fi

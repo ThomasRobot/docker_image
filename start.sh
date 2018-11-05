@@ -68,6 +68,11 @@ elif [ $(uname) = 'Darwin' ]; then
   NET_CONF="${NET_CONF} -p 11311:11311"
 fi
 
+if [ -n "$ROS_IP" ]; then
+  NET_CONF="${NET_CONF} -e ROS_IP=${ROS_IP}"
+  echo ${NET_CONF}
+fi
+
 ${DOCKER_CMD} run -it \
                   -d \
                   --privileged \
