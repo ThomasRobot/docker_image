@@ -52,25 +52,36 @@ else
   NV_SUFFIX=""
 fi
 
-#                   --net host \
-#                   --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
-#                   --add-host ${HOST_HOSTNAME}:127.0.0.1 \
-#                   --expose=12345 \
+LOCALTIME=""
+DISPLAY=""
+NET_CONF="\
+  --hostname ${LOCAL_HOSTNAME} \
+  --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
+  --add-host ${HOST_HOSTNAME}:127.0.0.1 \
+"
+
+if [ $(uname) = 'Linux' ]; then
+  LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
+  DISPLAY="-e DISPLAY=\":0\""
+  NET_CONF="${NET_CONF} --net host"
+elif [ $(uname) = 'Darwin' ]; then
+  NET_CONF="${NET_CONF} -p 11311:11311"
+fi
 
 ${DOCKER_CMD} run -it \
                   -d \
                   --privileged \
                   --name thomas_os \
-                  -e DISPLAY=":0" \
+                  ${DISPLAY} \
                   -e DOCKER_USER=$USER \
                   -e DOCKER_USER_ID=$USER_ID \
                   -e DOCKER_GRP=$GRP \
                   -e DOCKER_GRP_ID=$GRP_ID \
                   -e QT_X11_NO_MITSHM=1 \
+                  ${NET_CONF} \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-                  --hostname ${LOCAL_HOSTNAME} \
+                  ${LOCALTIME} \
                   -v /media:/media \
-                  -v /etc/localtime:/etc/localtime:ro \
                   -v /dev:/dev \
                   ${PG_GRP} \
                   ${PG_GRP_ID} \
@@ -79,6 +90,6 @@ ${DOCKER_CMD} run -it \
                   -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
                   -v ${BASE_DIR}/scripts:/thomas/scripts \
                   -w ${DOCKER_HOME} \
-                  thomas:simulation${NV_SUFFIX} \
+                  thomas:space${NV_SUFFIX} \
                   /bin/zsh -c 'source /opt/ros/${ROS_DISTRO}/setup.zsh && roscore'
 
