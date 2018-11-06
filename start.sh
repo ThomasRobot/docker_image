@@ -62,7 +62,7 @@ NET_CONF="\
 
 if [ $(uname) = 'Linux' ]; then
   LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
-  DISPLAY="-e DISPLAY=\":0\""
+  DISPLAY="-e DISPLAY=:0"
   NET_CONF="${NET_CONF} --net host"
 elif [ $(uname) = 'Darwin' ]; then
   NET_CONF="${NET_CONF} -p 11311:11311"
