@@ -16,4 +16,6 @@ if [ -n "${DOCKER_USER}" ] && [ -n "${DOCKER_USER_ID}" ] && [ -n "${DOCKER_GRP}"
   mkdir /home/${DOCKER_USER}/.ros
   cp -r ~/.ros/rosdep /home/${DOCKER_USER}/.ros
   chown -R ${DOCKER_USER}:${DOCKER_GRP} /home/${DOCKER_USER}
+  chmod a+rwx /dev/null
+  chmod a+rwx /dev/urandom
 fi
