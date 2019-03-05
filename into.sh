@@ -4,7 +4,7 @@ xhost +local:root 1>/dev/null 2>&1
 
 wait_cnt=5
 while [ $wait_cnt -gt 0 ]; do
-  ret=$(docker exec thomas_os /bin/zsh -c "cat /etc/passwd | cut -d':' -f1 | grep thomas")
+  ret=$(docker exec thomas_os /bin/zsh -c "cat /etc/passwd | cut -d':' -f1 | grep $USER")
   if [ -n "$ret" ]; then
     break
   fi
