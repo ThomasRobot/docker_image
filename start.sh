@@ -53,7 +53,7 @@ else
 fi
 
 LOCALTIME=""
-DISPLAY=""
+DISPLAY_CONF="-e QT_X11_NO_MITSHM=1"
 NET_CONF="\
   --hostname ${LOCAL_HOSTNAME} \
   --add-host ${LOCAL_HOSTNAME}:127.0.0.1 \
@@ -62,10 +62,11 @@ NET_CONF="\
 
 if [ $(uname) = 'Linux' ]; then
   LOCALTIME="-v /etc/localtime:/etc/localtime:ro"
-  DISPLAY="-e DISPLAY=:0"
+  DISPLAY_CONF="${DISPLAY_CONF} -e DISPLAY=:0"
   NET_CONF="${NET_CONF} --net host"
 elif [ $(uname) = 'Darwin' ]; then
   NET_CONF="${NET_CONF} -p 11311:11311"
+  DISPLAY_CONF="${DISPLAY_CONF} -e DISPLAY=host.docker.internal:0 -e LIBGL_ALWAYS_SOFTWARE=1"
 fi
 
 if [ -n "$ROS_IP" ]; then
@@ -77,12 +78,11 @@ ${DOCKER_CMD} run -it \
                   -d \
                   --privileged \
                   --name thomas_os \
-                  ${DISPLAY} \
+                  ${DISPLAY_CONF} \
                   -e DOCKER_USER=$USER \
                   -e DOCKER_USER_ID=$USER_ID \
                   -e DOCKER_GRP=$GRP \
                   -e DOCKER_GRP_ID=$GRP_ID \
-                  -e QT_X11_NO_MITSHM=1 \
                   ${NET_CONF} \
                   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
                   ${LOCALTIME} \
@@ -95,6 +95,6 @@ ${DOCKER_CMD} run -it \
                   -v $HOME/.thomas:${DOCKER_HOME}/.thomas \
                   -v ${BASE_DIR}/scripts:/thomas/scripts \
                   -w ${DOCKER_HOME} \
-                  thomas:space${NV_SUFFIX} \
+                  thomas:v3${NV_SUFFIX} \
                   /bin/zsh -c 'source /opt/ros/${ROS_DISTRO}/setup.zsh && roscore'
 
