@@ -34,6 +34,12 @@ function install_docker() {
   # 
   sudo usermod -aG docker $USER
   systemctl enable docker
+
+
+  sudo mkdir -p /etc/docker/certs.d/reg.tangli.site\:8843
+  sudo cp reg.tangli.site.crt /etc/docker/certs.d/reg.tangli.site\:8843/ca.crt
+
+  sudo service docker restart
 }
 
 # Install some essential package
