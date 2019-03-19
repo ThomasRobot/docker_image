@@ -1,4 +1,5 @@
-FROM thomas:dev
+ARG ROS_DISTRO=kinetic
+FROM thomas:ros-$ROS_DISTRO-thomas-dev
 
 RUN apt-get update && \
     apt-get install -y lxde-common

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ISO="${HOME}/Downloads/ubuntu-14.04.5-desktop-amd64.iso"
+# ISO="${HOME}/Downloads/ubuntu-14.04.5-desktop-amd64.iso"
+ISO="/media/tangli/WData/tangli/ubuntu-16.04.6-desktop-amd64.iso"
 
 sudo rm -rf ./data/iso
 mkdir -p /tmp/iso

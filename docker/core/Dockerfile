@@ -1,4 +1,5 @@
-FROM osrf/ros:kinetic-desktop-full
+ARG ROS_DISTRO=kinetic
+FROM osrf/ros:$ROS_DISTRO-desktop-full
 
 # Update sources
 COPY sources.list.ustc /etc/apt/sources.list

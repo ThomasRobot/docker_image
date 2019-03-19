@@ -1,4 +1,5 @@
-FROM thomas:space
+ARG ROS_DISTRO=kinetic
+FROM thomas:ros-$ROS_DISTRO-thomas-space-simulation
 
 RUN apt-get update && \
     apt-get install -y \
