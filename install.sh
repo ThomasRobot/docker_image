@@ -53,9 +53,12 @@ function install_linuxcan () {
 
 # Prepare usb 
 function install_pointgrey () {
-  sudo apt-get install -y libraw1394-11 libavcodec-ffmpeg56 libavformat-ffmpeg56 libswscale-ffmpeg3 libswresample-ffmpeg1 libavutil-ffmpeg54 libgtkmm-2.4-dev libglademm-2.4-dev libgtkglextmm-x11-1.2-dev libusb-1.0-0
-  tar -xzvf ${BASE_DIR}/docker/base/flycapture*.tgz -C /tmp && cd /tmp/flycapture*
-  echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
+  # sudo apt-get install -y libraw1394-11 libavcodec-ffmpeg56 libavformat-ffmpeg56 libswscale-ffmpeg3 libswresample-ffmpeg1 libavutil-ffmpeg54 libgtkmm-2.4-dev libglademm-2.4-dev libgtkglextmm-x11-1.2-dev libusb-1.0-0
+  tar -xzvf ${BASE_DIR}/docker/core/flycapture2-*.tgz -C /tmp && cd /tmp/flycapture*
+  sh install_flycapture.sh
+  tar -xzvf ${BASE_DIR}/docker/core/spinnaker-*.tar.gz -C /tmp && cd /tmp/spinnaker*
+  sh install_spinnaker.sh
+  # echo 'y\ny\nthomas\ny\ny\nn\n' | sh install_flycapture.sh
   sudo cp /etc/default/grub /etc/default/grub.backup
   sed 's/GRUB_CMDLINE_LINUX_DEFAULT.*$/GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash usbcore\.usbfs_memory_mb=1000\"/' /etc/default/grub | sudo tee /etc/default/grub
   sudo update-grub
@@ -94,9 +97,9 @@ if $(read_confirm_n "Install pointgrey driver") ; then
   install_pointgrey
 fi
 
-if $(read_confirm_n "Install realsense driver") ; then
-  install_realsense
-fi
+# if $(read_confirm_n "Install realsense driver") ; then
+#   install_realsense
+# fi
 
 if $(read_confirm_n "Prepare velodyne network") ; then
   install_velodyne
